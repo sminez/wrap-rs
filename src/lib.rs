@@ -1,4 +1,3 @@
-//! Simple python style decorators for Rust
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{
@@ -55,6 +54,7 @@ impl Fold for Rewriter {
         let wrapper = &self.wrapper;
 
         ast.sig.ident = proc_macro2::Ident::new("__inner", proc_macro2::Span::call_site());
+        ast.sig.inputs.clear();
         let args = ast.sig.inputs.iter().map(|i| match i {
             FnArg::Receiver(_) => quote! { self },
             FnArg::Typed(t) => {
